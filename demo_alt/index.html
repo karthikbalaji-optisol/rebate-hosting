@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Merchant Demo — Alternate Theme</title>
+  <style>
+    :root{ --bg:#fff7f3; --card:#ffffff; --accent:#ff6b35; --accent2:#ffb199 }
+    body{ margin:0; font-family: Inter, Arial, Helvetica, sans-serif; background:var(--bg); color:#222 }
+    .container{ max-width:860px; margin:40px auto; padding:28px }
+    .hero{ display:flex; justify-content:space-between; align-items:center }
+    .brand{ display:flex; gap:12px; align-items:center }
+    .logo{ width:56px; height:56px; border-radius:8px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700 }
+    .headline{ font-size:20px; font-weight:700 }
+    .muted{ color:#666 }
+
+    .panel{ margin-top:20px; background:var(--card); padding:18px; border-radius:12px; box-shadow:0 8px 24px rgba(21,31,45,0.06) }
+    #rebate-root{ margin-top:14px }
+
+    .note{ margin-top:12px; color:#555 }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="brand">
+        <div class="logo">A</div>
+        <div>
+          <div class="headline">Alternate Merchant — Order Complete</div>
+          <div class="muted">Order #AM-20251029-07 • Oct 29, 2025</div>
+        </div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700">Total</div>
+        <div style="color:var(--accent); font-size:18px; font-weight:700">$89.00</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div>
+          <div style="font-size:13px;color:#666">Items</div>
+          <div style="font-weight:600">2 items — Premium Case + Adapter</div>
+        </div>
+        <div>
+          <div style="font-size:13px;color:#666">Delivery</div>
+          <div style="font-weight:600">Express</div>
+        </div>
+      </div>
+
+      <hr style="margin:14px 0;border:none;border-top:1px solid #f1f1f1" />
+
+      <h3 style="margin:0 0 10px 0">Your rebate card</h3>
+      <p class="note">This merchant uses the Rebate SDK with a custom theme. Click the button to get your rebate.</p>
+
+      <div id="buttonSection" style="margin-top:16px">
+        <button id="getRebateBtn" style="width:100%;padding:12px;background:#ff6b35;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer">Get Rebate</button>
+      </div>
+
+      <div id="rebate-root" style="display:none;margin-top:16px"></div>
+      <p id="notice" style="color:#b00020;margin-top:8px"></p>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var sdkLoaded = false;
+      var sdkInstance = null;
+
+      document.getElementById('getRebateBtn').addEventListener('click', function() {
+        // Hide button
+        document.getElementById('buttonSection').style.display = 'none';
+        // Show SDK container
+        document.getElementById('rebate-root').style.display = 'block';
+
+        if (!sdkLoaded) {
+          loadAndMountSDK();
+          sdkLoaded = true;
+        }
+      });
+
+      function loadAndMountSDK() {
+        var sdkPath = '../sdk/dist/index.umd.js';
+        var s = document.createElement('script');
+        s.src = sdkPath;
+        s.onload = function(){
+          try{
+            var SDK = window.OnbeRebateSDK && window.OnbeRebateSDK.RebateSDK ? window.OnbeRebateSDK.RebateSDK : null;
+            if(!SDK) {
+              document.getElementById('notice').textContent = 'SDK loaded but expected global export not found.';
+              return;
+            }
+
+            // Note: different theme/colors passed in config below
+            sdkInstance = new SDK({
+              containerId: 'rebate-root',
+              primaryColor: '#ff6b35',
+              secondaryColor: '#ffb199',
+              iconUrl: 'https://via.placeholder.com/36/ff6b35/ffffff?text=A',
+              customer: { firstName: 'Alex', lastName: 'Alt' },
+              companyName: 'Target'
+            });
+            sdkInstance.mount();
+          } catch (e) {
+            document.getElementById('notice').textContent = 'SDK loaded but failed to initialize: ' + e.message;
+            console.error(e);
+          }
+        };
+        s.onerror = function(){
+          document.getElementById('notice').innerHTML = 'SDK bundle not found at <code>' + sdkPath + '</code>.';
+        };
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
+</body>
+</html>
