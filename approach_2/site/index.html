@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Order Confirmation — Merchant Demo</title>
+  <style>
+    :root{ --bg:#f4f6fb; --card:#fff; --accent:#1e88e5; }
+    body{ margin:0; font-family: Inter, Arial, Helvetica, sans-serif; background:var(--bg); color:#222 }
+    .page{ max-width:900px; margin:36px auto; padding:28px }
+    .header{ display:flex; align-items:center; gap:16px }
+    .logo{ width:56px; height:56px; border-radius:8px; background:linear-gradient(135deg,var(--accent),#6ec1ff); display:flex; align-items:center; justify-content:center; color:#fff; font-weight:700 }
+    .title{ font-size:20px; font-weight:600 }
+    .subtitle{ color:#666; margin-top:6px }
+
+    .confirmation{ margin-top:20px; display:flex; gap:24px }
+    .left{ flex:1 }
+    .right{ width:360px }
+
+    .card{ background:var(--card); border-radius:12px; padding:18px; box-shadow:0 6px 20px rgba(15,23,42,0.06) }
+    .order-number{ font-weight:600; color:var(--accent) }
+    .summary dt{ color:#555 }
+
+    /* rebate area where SDK mounts */
+    #rebate-root{ margin-top:16px }
+
+    footer.note{ margin-top:20px; color:#888; font-size:13px }
+
+    @media(max-width:720px){ .confirmation{flex-direction:column} .right{width:100%} }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="logo">M</div>
+      <div>
+        <div class="title">Thank you — your order is confirmed</div>
+        <div class="subtitle">A confirmation e‑mail has been sent. Below is your order summary.</div>
+      </div>
+    </div>
+
+    <div class="confirmation">
+      <div class="left">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <div>
+              <div style="font-size:14px;color:#666">Order</div>
+              <div class="order-number">#ONB-20251029-01</div>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:12px;color:#666">Placed</div>
+              <div style="font-weight:600">Oct 29, 2025</div>
+            </div>
+          </div>
+
+          <hr style="margin:14px 0;border:none;border-top:1px solid #eee" />
+
+          <dl class="summary" style="display:grid;grid-template-columns:1fr auto;gap:8px">
+            <dt>1 × Wireless Headphones</dt><dd style="text-align:right">$129.00</dd>
+            <dt>1 × Carrying Case</dt><dd style="text-align:right">$19.00</dd>
+            <dt>Shipping</dt><dd style="text-align:right">$6.00</dd>
+            <dt style="font-weight:700">Total</dt><dd style="font-weight:700;text-align:right">$154.00</dd>
+          </dl>
+
+          <footer class="note">If you have questions about your order, reply to the confirmation e‑mail.</footer>
+        </div>
+
+        <div class="card" style="margin-top:18px">
+          <h3 style="margin:0 0 8px 0">Your rebate</h3>
+          <p style="margin:0;color:#555">Click the CTA below to retrieve your rebate card. The card preview will appear here.</p>
+
+          <div id="rebate-root"></div>
+          <p id="notice" style="color:#b00020;margin-top:8px"></p>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="card">
+          <div style="font-size:13px;color:#666">Delivery</div>
+          <div style="font-weight:600;margin-top:6px">Standard — 3–5 business days</div>
+
+          <hr style="margin:12px 0;border:none;border-top:1px solid #f0f0f0" />
+
+          <div style="font-size:13px;color:#666">Shipping to</div>
+          <div style="margin-top:6px">Jane Merchant<br/>123 Market St<br/>San Francisco, CA</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function(){
+      var sdkPath = 'https://karthikbalaji-optisol.github.io/rebate-hosting/approach_2/sdk/index.umd.js';
+      var s = document.createElement('script');
+      s.src = sdkPath;
+      s.onload = function(){
+        try{
+          var SDK = window.OnbeRebateSDK && window.OnbeRebateSDK.RebateSDK ? window.OnbeRebateSDK.RebateSDK : null;
+          if(!SDK) {
+            document.getElementById('notice').textContent = 'SDK loaded but expected global export not found.';
+            return;
+          }
+
+          var sdk = new SDK({
+            containerId: 'rebate-root',
+            primaryColor: '#1e88e5',
+            secondaryColor: '#6ec1ff',
+            iconUrl: 'https://via.placeholder.com/36',
+            customer: { firstName: 'Jane', lastName: 'Merchant' },
+            companyName: 'Walmart'
+          });
+          sdk.mount();
+        } catch (e) {
+          document.getElementById('notice').textContent = 'SDK loaded but failed to initialize: ' + e.message;
+          console.error(e);
+        }
+      };
+      s.onerror = function(){
+        document.getElementById('notice').innerHTML = 'SDK bundle not found at <code>' + sdkPath + '</code>.';
+      };
+      document.head.appendChild(s);
+    })();
+  </script>
+</body>
+</html>
