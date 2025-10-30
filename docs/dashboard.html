@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payment History — Sutter Health</title>
+  <style>
+    :root {
+      --primary: #4db6ac;
+      --primary-dark: #00897b;
+      --secondary: #80cbc4;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #212121;
+      --text-light: #757575;
+      --border: #e0e0e0;
+      --success: #4caf50;
+      --warning: #ff9800;
+      --info: #2196f3;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    
+    /* Header */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .heart-icon {
+      width: 32px;
+      height: 32px;
+      fill: var(--primary);
+    }
+    
+    .brand-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary);
+    }
+    
+    .nav-link.active {
+      color: var(--primary);
+      font-weight: 600;
+    }
+    
+    /* Main Content */
+    .main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+    
+    .page-title {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    
+    /* Refund Banner */
+    .banner {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 4px 12px rgba(77, 182, 172, 0.2);
+    }
+    
+    .banner-content {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .banner-icon {
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .banner-icon svg {
+      width: 24px;
+      height: 24px;
+      fill: white;
+    }
+    
+    .banner-text h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    
+    .banner-text p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+    
+    .btn-banner {
+      background: white;
+      color: var(--primary);
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      white-space: nowrap;
+    }
+    
+    .btn-banner:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    /* Payment History */
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+    
+    .history-card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      overflow: hidden;
+    }
+    
+    .history-item {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      transition: background 0.2s;
+    }
+    
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    
+    .history-item:hover {
+      background: #f9fafb;
+    }
+    
+    .history-main {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .provider-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+    
+    .specialty {
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+    
+    .date {
+      font-size: 13px;
+      color: var(--text-light);
+    }
+    
+    .history-meta {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    
+    .amount {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      text-align: right;
+      min-width: 90px;
+    }
+    
+    .chip {
+      padding: 6px 12px;
+      border-radius: 16px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    
+    .chip-paid {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .chip-refund {
+      background: #e0f2f1;
+      color: #00695c;
+    }
+    
+    .chip-processing {
+      background: #fff3e0;
+      color: #ef6c00;
+    }
+    
+    .btn-details {
+      background: transparent;
+      color: var(--primary);
+      border: 1px solid var(--primary);
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+    
+    .btn-details:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 12px;
+      }
+      
+      .brand-text {
+        font-size: 16px;
+      }
+      
+      .heart-icon {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .nav {
+        gap: 12px;
+      }
+      
+      .nav-link {
+        font-size: 13px;
+        display: none;
+      }
+      
+      .nav-link:last-child {
+        display: block; /* Keep Sign Out visible */
+      }
+      
+      .main {
+        padding: 16px 12px;
+      }
+      
+      .page-title {
+        font-size: 22px;
+        margin-bottom: 16px;
+      }
+      
+      .banner {
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+        padding: 20px 16px;
+      }
+      
+      .banner-content {
+        flex-direction: column;
+      }
+      
+      .banner-icon {
+        width: 40px;
+        height: 40px;
+      }
+      
+      .banner-text h3 {
+        font-size: 16px;
+      }
+      
+      .banner-text p {
+        font-size: 13px;
+      }
+      
+      .btn-banner {
+        width: 100%;
+        padding: 14px 20px;
+      }
+      
+      .section-title {
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+      
+      .history-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 16px;
+      }
+      
+      .provider-name {
+        font-size: 15px;
+      }
+      
+      .specialty {
+        font-size: 13px;
+      }
+      
+      .date {
+        font-size: 12px;
+      }
+      
+      .history-meta {
+        width: 100%;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .amount {
+        text-align: left;
+        font-size: 16px;
+        min-width: auto;
+      }
+      
+      .chip {
+        font-size: 11px;
+        padding: 5px 10px;
+      }
+      
+      .btn-details {
+        font-size: 12px;
+        padding: 7px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="dashboard.html" class="brand" style="text-decoration:none;color:inherit;cursor:pointer">
+      <svg class="heart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+      <span class="brand-text">Sutter Health</span>
+    </a>
+    
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-link active">Payments</a>
+      <a href="#" class="nav-link">Find Doctors</a>
+      <a href="#" class="nav-link">Treatments & Services</a>
+      <a href="#" class="nav-link" id="logoutLink">Sign Out</a>
+    </nav>
+  </header>
+  
+  <main class="main">
+    <h1 class="page-title">Payment History</h1>
+    
+    <div id="refundBanner" style="display: none;">
+      <div class="banner">
+        <div class="banner-content">
+          <div class="banner-icon">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+          </div>
+          <div class="banner-text">
+            <h3>You have a refund available</h3>
+            <p>An overpayment of $93.00 is ready to be refunded to you as a virtual card</p>
+          </div>
+        </div>
+        <button class="btn-banner" id="claimRefundBtn">Claim Your Refund</button>
+      </div>
+    </div>
+    
+    <div class="section-title">View and manage your healthcare payment transactions</div>
+    
+    <div class="history-card">
+      <div id="transactionList"></div>
+    </div>
+  </main>
+  
+  <script src="shared.js"></script>
+  <script>
+    // Redirect if not authenticated
+    if (!isAuthenticated()) {
+      window.location.href = 'index.html';
+    }
+    
+    // Logout handler
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      logout();
+      showToast('Signed out successfully');
+      setTimeout(() => window.location.href = 'index.html', 500);
+    });
+    
+    // Load transactions
+    const transactions = getTransactions();
+    const refundTransaction = getRefundTransaction();
+    
+    // Show refund banner if there's a refundable transaction
+    if (refundTransaction) {
+      document.getElementById('refundBanner').style.display = 'block';
+      document.getElementById('claimRefundBtn').addEventListener('click', function() {
+        window.location.href = 'visit.html?id=' + refundTransaction.id;
+      });
+    }
+    
+    // Render transaction list
+    const listEl = document.getElementById('transactionList');
+    transactions.forEach(tx => {
+      const item = document.createElement('div');
+      item.className = 'history-item';
+      
+      const chipClass = 
+        tx.status === 'Paid' ? 'chip-paid' :
+        tx.status === 'RefundAvailable' ? 'chip-refund' :
+        'chip-processing';
+      
+      const chipText =
+        tx.status === 'Paid' ? 'Paid' :
+        tx.status === 'RefundAvailable' ? 'Refund Available' :
+        'Processing';
+      
+      item.innerHTML = `
+        <div class="history-main">
+          <div class="provider-name">${tx.providerName}</div>
+          <div class="specialty">${tx.specialty}</div>
+          <div class="date">Date: ${tx.dateOfService}</div>
+        </div>
+        <div class="history-meta">
+          <div class="amount">${formatCurrency(tx.amount)}</div>
+          <div class="chip ${chipClass}">${chipText}</div>
+          <button class="btn-details" data-id="${tx.id}">View Details</button>
+        </div>
+      `;
+      
+      listEl.appendChild(item);
+    });
+    
+    // Add click handlers for View Details buttons
+    document.querySelectorAll('.btn-details').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const txId = this.getAttribute('data-id');
+        window.location.href = 'visit.html?id=' + txId;
+      });
+    });
+  </script>
+</body>
+</html>

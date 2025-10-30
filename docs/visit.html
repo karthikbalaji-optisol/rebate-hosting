@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Visit Information — Sutter Health</title>
+  <style>
+    :root {
+      --primary: #4db6ac;
+      --primary-dark: #00897b;
+      --secondary: #80cbc4;
+      --bg: #f5f7fa;
+      --card: #ffffff;
+      --text: #212121;
+      --text-light: #757575;
+      --border: #e0e0e0;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    
+    /* Header */
+    .header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .heart-icon {
+      width: 32px;
+      height: 32px;
+      fill: var(--primary);
+    }
+    
+    .brand-text {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .nav {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+    }
+    
+    .nav-link {
+      color: var(--text);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    
+    .nav-link:hover {
+      color: var(--primary);
+    }
+    
+    /* Main Content */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+    
+    .breadcrumb {
+      margin-bottom: 24px;
+      font-size: 14px;
+      color: var(--text-light);
+    }
+    
+    .breadcrumb a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    .page-title {
+      font-size: 28px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+    
+    /* Card Sections */
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+    
+    .card-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .card-icon {
+      width: 20px;
+      height: 20px;
+      fill: var(--primary);
+    }
+    
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    .info-row:last-child {
+      border-bottom: none;
+    }
+    
+    .info-label {
+      font-size: 14px;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+    
+    .info-value {
+      font-size: 14px;
+      color: var(--text);
+      text-align: right;
+      max-width: 60%;
+    }
+    
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 0;
+      font-size: 15px;
+    }
+    
+    .breakdown-row.total {
+      border-top: 2px solid var(--border);
+      padding-top: 16px;
+      margin-top: 8px;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .breakdown-label {
+      color: var(--text);
+    }
+    
+    .breakdown-value {
+      font-weight: 600;
+    }
+    
+    .breakdown-value.positive {
+      color: var(--primary);
+    }
+    
+    .reason-text {
+      background: #f9fafb;
+      padding: 16px;
+      border-radius: 8px;
+      border-left: 4px solid var(--primary);
+      font-size: 14px;
+      color: var(--text);
+      margin-top: 16px;
+    }
+    
+    /* Refund Card Section */
+    .refund-card {
+      background: linear-gradient(135deg, rgba(77, 182, 172, 0.05), rgba(128, 203, 196, 0.05));
+      border: 2px solid var(--primary);
+    }
+    
+    .refund-icon-wrapper {
+      width: 56px;
+      height: 56px;
+      background: var(--primary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+    }
+    
+    .refund-icon-wrapper svg {
+      width: 32px;
+      height: 32px;
+      fill: white;
+    }
+    
+    .refund-title {
+      text-align: center;
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+    
+    .refund-title.left-aligned {
+      text-align: left;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    
+    .refund-title.left-aligned svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--primary);
+    }
+    
+    .refund-description {
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-light);
+      margin-bottom: 20px;
+    }
+    
+    .btn-claim {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    
+    .btn-claim:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+    
+    .btn-claim:active {
+      transform: translateY(0);
+    }
+    
+    /* SDK Container */
+    .sdk-section {
+      margin-top: 24px;
+      display: none;
+    }
+    
+    .sdk-section.visible {
+      display: block;
+    }
+    
+    #rebate-root {
+      display: flex;
+      justify-content: center;
+    }
+    
+    .loading {
+      text-align: center;
+      color: var(--text-light);
+      padding: 20px;
+    }
+    
+    @media (max-width: 768px) {
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      .header {
+        padding: 12px 12px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+      
+      .brand-text {
+        font-size: 16px;
+      }
+      
+      .heart-icon {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .nav {
+        gap: 12px;
+      }
+      
+      .nav-link {
+        font-size: 13px;
+        display: none;
+      }
+      
+      .nav-link:last-child {
+        display: block; /* Keep Sign Out visible */
+      }
+      
+      .main {
+        padding: 16px 12px;
+      }
+      
+      .breadcrumb {
+        font-size: 13px;
+        margin-bottom: 16px;
+      }
+      
+      .page-title {
+        font-size: 22px;
+        margin-bottom: 20px;
+      }
+      
+      .card {
+        padding: 20px 16px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+      }
+      
+      .card-title {
+        font-size: 16px;
+        margin-bottom: 14px;
+      }
+      
+      .card-icon {
+        width: 18px;
+        height: 18px;
+      }
+      
+      .info-row {
+        flex-direction: column;
+        gap: 4px;
+        padding: 10px 0;
+      }
+      
+      .info-label {
+        font-size: 13px;
+      }
+      
+      .info-value {
+        text-align: left;
+        max-width: 100%;
+        font-size: 14px;
+        font-weight: 500;
+      }
+      
+      .breakdown-row {
+        font-size: 14px;
+        padding: 8px 0;
+      }
+      
+      .breakdown-row.total {
+        font-size: 16px;
+        padding-top: 12px;
+      }
+      
+      .reason-text {
+        font-size: 13px;
+        padding: 12px;
+      }
+      
+      .refund-icon-wrapper {
+        width: 48px;
+        height: 48px;
+      }
+      
+      .refund-icon-wrapper svg {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .refund-title {
+        font-size: 18px;
+      }
+      
+      .refund-description {
+        font-size: 13px;
+      }
+      
+      .btn-claim {
+        padding: 14px;
+        font-size: 15px;
+      }
+      
+      .sdk-section {
+        margin-top: 20px;
+        padding-top: 20px;
+      }
+      
+      #rebate-root {
+        width: 100%;
+        display: block;
+      }
+      
+      #sdkNotice {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="dashboard.html" class="brand" style="text-decoration:none;color:inherit;cursor:pointer">
+      <svg class="heart-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+      </svg>
+      <span class="brand-text">Sutter Health</span>
+    </a>
+    
+    <nav class="nav">
+      <a href="dashboard.html" class="nav-link">Payments</a>
+      <a href="#" class="nav-link">Find Doctors</a>
+      <a href="#" class="nav-link">Treatments & Services</a>
+      <a href="#" class="nav-link" id="logoutLink">Sign Out</a>
+    </nav>
+  </header>
+  
+  <main class="main">
+    <div class="breadcrumb">
+      <a href="dashboard.html">← Back to Payment History</a>
+    </div>
+    
+    <h1 class="page-title">Visit Information</h1>
+    
+    <div class="card">
+      <div class="card-title">
+        <svg class="card-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11zM7 10h5v5H7z"/>
+        </svg>
+        Date of Service
+      </div>
+      <div id="visitInfoContent"></div>
+    </div>
+    
+    <div class="card">
+      <div class="card-title">
+        <svg class="card-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/>
+        </svg>
+        Payment Breakdown
+      </div>
+      <div id="paymentBreakdownContent"></div>
+      <div id="reasonContent"></div>
+    </div>
+    
+    <div class="card refund-card" id="refundSection" style="display: none;">
+      <div class="refund-icon-wrapper">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+        </svg>
+      </div>
+      <h2 class="refund-title">Receive Your Refund as a Virtual Card</h2>
+      <p class="refund-description">
+        Click below to instantly receive your refund as a virtual prepaid card that you can use online and in stores.
+      </p>
+      <div id="claimSection">
+        <button class="btn-claim" id="claimRefundBtn">Claim Your Refund</button>
+      </div>
+      
+      <div class="sdk-section" id="sdkSection">
+        <div id="rebate-root"></div>
+        <p id="sdkNotice" style="color:#b00020;margin-top:8px;text-align:center;display:none;"></p>
+      </div>
+    </div>
+  </main>
+  
+  <script src="shared.js"></script>
+  <script>
+    // Redirect if not authenticated
+    if (!isAuthenticated()) {
+      window.location.href = 'index.html';
+    }
+    
+    // Logout handler
+    document.getElementById('logoutLink').addEventListener('click', function(e) {
+      e.preventDefault();
+      logout();
+      showToast('Signed out successfully');
+      setTimeout(() => window.location.href = 'index.html', 500);
+    });
+    
+    // Get transaction ID from URL query parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const txId = urlParams.get('id');
+    
+    if (!txId) {
+      showToast('Invalid visit ID', 'error');
+      setTimeout(() => window.location.href = 'dashboard.html', 1500);
+    } else {
+      // Load transaction and visit details
+      const transaction = getTransaction(txId);
+      const visitDetails = getVisitDetails(txId);
+      
+      if (!transaction || !visitDetails) {
+        showToast('Visit not found', 'error');
+        setTimeout(() => window.location.href = 'dashboard.html', 1500);
+      } else {
+        // Render visit information
+        const visitInfoEl = document.getElementById('visitInfoContent');
+        visitInfoEl.innerHTML = `
+          <div class="info-row">
+            <span class="info-label">Date</span>
+            <span class="info-value">${visitDetails.visitInfo.date}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Provider</span>
+            <span class="info-value">${visitDetails.visitInfo.provider}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Specialty</span>
+            <span class="info-value">${visitDetails.visitInfo.specialty}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Location</span>
+            <span class="info-value">${visitDetails.visitInfo.location}</span>
+          </div>
+        `;
+        
+        // Render payment breakdown
+        const breakdownEl = document.getElementById('paymentBreakdownContent');
+        breakdownEl.innerHTML = `
+          <div class="breakdown-row">
+            <span class="breakdown-label">Original Amount</span>
+            <span class="breakdown-value">${formatCurrency(visitDetails.breakdown.original)}</span>
+          </div>
+          <div class="breakdown-row">
+            <span class="breakdown-label">Insurance Covered</span>
+            <span class="breakdown-value">(${formatCurrency(visitDetails.breakdown.covered)})</span>
+          </div>
+          <div class="breakdown-row total">
+            <span class="breakdown-label">Refund Amount</span>
+            <span class="breakdown-value positive">${formatCurrency(visitDetails.breakdown.refund)}</span>
+          </div>
+        `;
+        
+        // Render reason
+        const reasonEl = document.getElementById('reasonContent');
+        reasonEl.innerHTML = `<div class="reason-text">${visitDetails.reason}</div>`;
+        
+        // Show refund section if this transaction is refundable
+        if (transaction.status === 'RefundAvailable') {
+          document.getElementById('refundSection').style.display = 'block';
+          
+          // Handle Claim Refund button
+          let sdkMounted = false;
+          document.getElementById('claimRefundBtn').addEventListener('click', function() {
+            const claimSection = document.getElementById('claimSection');
+            const sdkSection = document.getElementById('sdkSection');
+            const refundCard = document.getElementById('refundSection');
+            const refundTitle = document.querySelector('.refund-title');
+            
+            // Hide the button, icon, and description, but update the title
+            claimSection.style.display = 'none';
+            document.querySelector('.refund-icon-wrapper').style.display = 'none';
+            document.querySelector('.refund-description').style.display = 'none';
+            
+            // Update title to left-aligned with icon
+            refundTitle.className = 'refund-title left-aligned';
+            refundTitle.innerHTML = `
+              <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
+              </svg>
+              Your Virtual Card
+            `;
+            
+            // Show the SDK section
+            sdkSection.classList.add('visible');
+            
+            // Scroll to ensure the entire card area is visible
+            setTimeout(() => {
+              refundCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }, 100);
+            
+            // Load and mount SDK if not already done
+            if (!sdkMounted) {
+              loadSDK();
+              sdkMounted = true;
+            }
+          });
+        }
+      }
+    }
+    
+    // Load and initialize SDK
+    function loadSDK() {
+      const sdkPath = 'https://karthikbalaji-optisol.github.io/rebate-hosting/approach_3/index.umd.js'
+      const script = document.createElement('script');
+      script.src = sdkPath;
+      
+      script.onload = function() {
+        try {
+          const SDK = window.OnbeRebateSDK && window.OnbeRebateSDK.RebateSDK;
+          if (!SDK) {
+            document.getElementById('sdkNotice').textContent = 'SDK loaded but expected global export not found.';
+            document.getElementById('sdkNotice').style.display = 'block';
+            return;
+          }
+          
+          const user = getCurrentUser();
+          const sdk = new SDK({
+            containerId: 'rebate-root',
+            primaryColor: '#4db6ac',
+            secondaryColor: '#80cbc4',
+            companyName: 'Sutter Health',
+            customer: {
+              firstName: user ? user.firstName : 'User',
+              lastName: user ? user.lastName : ''
+            }
+          });
+          sdk.mount();
+        } catch (e) {
+          document.getElementById('sdkNotice').textContent = 'SDK loaded but failed to initialize: ' + e.message;
+          document.getElementById('sdkNotice').style.display = 'block';
+          console.error(e);
+        }
+      };
+      
+      script.onerror = function() {
+        document.getElementById('sdkNotice').innerHTML = 'SDK bundle not found at <code>' + sdkPath + '</code>.';
+        document.getElementById('sdkNotice').style.display = 'block';
+      };
+      
+      document.head.appendChild(script);
+    }
+  </script>
+</body>
+</html>
