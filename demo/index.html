@@ -67,9 +67,13 @@
 
         <div class="card" style="margin-top:18px">
           <h3 style="margin:0 0 8px 0">Your rebate</h3>
-          <p style="margin:0;color:#555">Click the CTA below to retrieve your rebate card. The card preview will appear here.</p>
+          <p style="margin:0;color:#555">Click the button below to receive your rebate as a virtual card.</p>
 
-          <div id="rebate-root"></div>
+          <div id="buttonSection" style="margin-top:16px">
+            <button id="getRebateBtn" style="width:100%;padding:12px;background:#1e88e5;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer">Get Rebate</button>
+          </div>
+
+          <div id="rebate-root" style="display:none;margin-top:16px"></div>
           <p id="notice" style="color:#b00020;margin-top:8px"></p>
         </div>
       </div>
@@ -90,35 +94,57 @@
 
   <script>
     (function(){
-      var sdkPath = 'https://onbe-rebate.netlify.app/approach_2/sdk/index.umd.js';
-      var s = document.createElement('script');
-      s.src = sdkPath;
-      s.onload = function(){
-        try{
-          var SDK = window.OnbeRebateSDK && window.OnbeRebateSDK.RebateSDK ? window.OnbeRebateSDK.RebateSDK : null;
-          if(!SDK) {
-            document.getElementById('notice').textContent = 'SDK loaded but expected global export not found.';
-            return;
-          }
+      var sdkLoaded = false;
+      var sdkInstance = null;
 
-          var sdk = new SDK({
-            containerId: 'rebate-root',
-            primaryColor: '#1e88e5',
-            secondaryColor: '#6ec1ff',
-            iconUrl: 'https://via.placeholder.com/36',
-            customer: { firstName: 'Jane', lastName: 'Merchant' },
-            companyName: 'Walmart'
-          });
-          sdk.mount();
-        } catch (e) {
-          document.getElementById('notice').textContent = 'SDK loaded but failed to initialize: ' + e.message;
-          console.error(e);
+      document.getElementById('getRebateBtn').addEventListener('click', function() {
+        // Hide button
+        document.getElementById('buttonSection').style.display = 'none';
+        // Show SDK container
+        document.getElementById('rebate-root').style.display = 'block';
+
+        if (!sdkLoaded) {
+          loadAndMountSDK();
+          sdkLoaded = true;
         }
-      };
-      s.onerror = function(){
-        document.getElementById('notice').innerHTML = 'SDK bundle not found at <code>' + sdkPath + '</code>.';
-      };
-      document.head.appendChild(s);
+      });
+
+      function loadAndMountSDK() {
+        var sdkPath = '../sdk/index.umd.js';
+        var s = document.createElement('script');
+        s.src = sdkPath;
+        s.onload = function(){
+          try{
+            var SDK = window.OnbeRebateSDK && window.OnbeRebateSDK.RebateSDK ? window.OnbeRebateSDK.RebateSDK : null;
+            if(!SDK) {
+              document.getElementById('notice').textContent = 'SDK loaded but expected global export not found.';
+              return;
+            }
+
+            sdkInstance = new SDK({
+              containerId: 'rebate-root',
+              primaryColor: '#1e88e5',
+              secondaryColor: '#6ec1ff',
+              buttonColor: '#1e88e5',
+              buttonHoverColor: '#1565c0',
+              successColor: '#10b981',
+              successBgColor: '#f0f9f4',
+              errorColor: '#f44336',
+              iconUrl: 'https://via.placeholder.com/36',
+              customer: { firstName: 'Jane', lastName: 'Merchant' },
+              companyName: 'Walmart'
+            });
+            sdkInstance.mount();
+          } catch (e) {
+            document.getElementById('notice').textContent = 'SDK loaded but failed to initialize: ' + e.message;
+            console.error(e);
+          }
+        };
+        s.onerror = function(){
+          document.getElementById('notice').innerHTML = 'SDK bundle not found at <code>' + sdkPath + '</code>.';
+        };
+        document.head.appendChild(s);
+      }
     })();
   </script>
 </body>

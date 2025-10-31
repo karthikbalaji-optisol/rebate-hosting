@@ -469,9 +469,9 @@
           <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
         </svg>
       </div>
-      <h2 class="refund-title">Receive Your Refund as a Virtual Card</h2>
+      <h2 class="refund-title">Claim Your Refund</h2>
       <p class="refund-description">
-        Click below to instantly receive your refund as a virtual prepaid card that you can use online and in stores.
+        Choose how you'd like to receive your refund. Select from multiple convenient payout options.
       </p>
       <div id="claimSection">
         <button class="btn-claim" id="claimRefundBtn">Claim Your Refund</button>
@@ -580,7 +580,7 @@
               <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M20 4H4c-1.11 0-1.99.89-1.99 2L2 18c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V6c0-1.11-.89-2-2-2zm0 14H4v-6h16v6zm0-10H4V6h16v2z"/>
               </svg>
-              Your Virtual Card
+              Your Refund
             `;
             
             // Show the SDK section
@@ -603,7 +603,7 @@
     
     // Load and initialize SDK
     function loadSDK() {
-      const sdkPath = 'https://onbe-rebate.netlify.app/approach_3/sdk/index.umd.js'
+      const sdkPath = '../sdk/index.umd.js?v=' + Date.now();
       const script = document.createElement('script');
       script.src = sdkPath;
       
@@ -621,6 +621,11 @@
             containerId: 'rebate-root',
             primaryColor: '#4db6ac',
             secondaryColor: '#80cbc4',
+            buttonColor: '#00897b',
+            buttonHoverColor: '#00695c',
+            successColor: '#10b981',
+            successBgColor: '#f0f9f4',
+            errorColor: '#f44336',
             companyName: 'Sutter Health',
             customer: {
               firstName: user ? user.firstName : 'User',

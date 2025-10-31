@@ -1,0 +1,37 @@
+import { RebateSDKConfig } from './types';
+export declare class RebateSDK {
+    private cfg;
+    private container;
+    private rootEl;
+    private selectedPayoutMethod;
+    private currentBankAccount;
+    constructor(cfg: RebateSDKConfig);
+    mount(): Promise<void>;
+    private injectToastStyles;
+    private showTermsFlow;
+    private showTermsAndConditions;
+    private fetchAndRenderCard;
+    private showLoadingBar;
+    private hideLoadingBar;
+    private fetchCardDetails;
+    private fetchCvv;
+    private decrypt;
+    private maskCardNumber;
+    private renderCard;
+    private renderDetailsBox;
+    private renderAddToWalletButton;
+    private showAddToWalletFullScreen;
+    private showAddingCardSpinner;
+    private showCardAddedSuccess;
+    private showPayoutMethodSelection;
+    private renderPayoutMethodOption;
+    private showBankTransferFlow;
+    private showBankAccountForm;
+    private renderBankAccountCard;
+    private renderTransferButton;
+    private showToast;
+    private showRequestCheckPlaceholder;
+    private maskBankNumber;
+    private handlePayoutSelection;
+    private cardStyles;
+}

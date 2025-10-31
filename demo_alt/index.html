@@ -80,7 +80,7 @@
       });
 
       function loadAndMountSDK() {
-        var sdkPath = 'https://onbe-rebate.netlify.app/approach_2/sdk/index.umd.js';
+        var sdkPath = '../sdk/index.umd.js';
         var s = document.createElement('script');
         s.src = sdkPath;
         s.onload = function(){
@@ -96,6 +96,11 @@
               containerId: 'rebate-root',
               primaryColor: '#ff6b35',
               secondaryColor: '#ffb199',
+              buttonColor: '#ff6b35',
+              buttonHoverColor: '#e85a26',
+              successColor: '#10b981',
+              successBgColor: '#f0f9f4',
+              errorColor: '#f44336',
               iconUrl: 'https://via.placeholder.com/36/ff6b35/ffffff?text=A',
               customer: { firstName: 'Alex', lastName: 'Alt' },
               companyName: 'Target'

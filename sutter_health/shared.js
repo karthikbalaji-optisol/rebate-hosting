@@ -46,7 +46,7 @@ const VISIT_DETAILS = {
     },
     breakdown: {
       original: 453.00,
-      covered: 140.00,
+      covered: 360.00,
       refund: 93.00
     },
     reason: 'Reason: Insurance processed additional coverage after initial payment'
